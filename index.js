@@ -22,13 +22,13 @@ async function main() {
         chatId: '-565852162'
     });
     const timeOut1=11000;
-    const timeOut2=13000;
-    const timeOut3=15000;
+    const timeOut2=16000;
+    const timeOut3=21000;
 
     const httpsAgent = new https.Agent({
         rejectUnauthorized: false, // (NOTE: this will disable client verification)
     })
-    excute2(axios,cheerio,arrDienMayXanh,timeOut1,notify,'.kmbox.kb2.active','strong')
+    excute(httpsAgent,axios,cheerio,arrDienMayXanh,timeOut1,notify,'.kmbox.kb2.active','strong')
     excute(httpsAgent,axios,cheerio,arrDienChoLon,timeOut2,notify,'.price_block','strong')
     excute(httpsAgent,axios,cheerio,arrNguyenKim,timeOut3,notify,'.product_info_price_value-final','span')
 }
