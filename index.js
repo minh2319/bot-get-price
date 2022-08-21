@@ -15,22 +15,30 @@ async function main() {
     ]
     const cheerio = require('cheerio'); // khai báo module cheerio
     const axios = require('axios'); // khai báo module request-promise
+    const https = require('https'); // khai báo module request-promise
+    const fs = require('fs'); // khai báo module request-promise
     let notify = new Telegram({
         token: '2036073407:AAF1Q-PP1EuAsg73GKRWw-cBg-QbW5Y7pZk',
         chatId: '-565852162'
     });
-    const timeOut=60000;
-    excute(axios,cheerio,arrDienMayXanh,timeOut,notify,'.kmbox.kb2.active','strong')
-    excute(axios,cheerio,arrDienChoLon,timeOut,notify,'.price_block','strong')
-    // excute(axios,cheerio,arrNguyenKim,timeOut,notify,'.product_info_price_value-final','span')
+    const timeOut1=10000;
+    const timeOut2=20000;
+    const timeOut3=30000;
+
+    const httpsAgent = new https.Agent({
+        rejectUnauthorized: false, // (NOTE: this will disable client verification)
+    })
+    excute(httpsAgent,axios,cheerio,arrDienMayXanh,timeOut1,notify,'.kmbox.kb2.active','strong')
+    excute(httpsAgent,axios,cheerio,arrDienChoLon,timeOut2,notify,'.price_block','strong')
+    excute(httpsAgent,axios,cheerio,arrNguyenKim,timeOut3,notify,'.product_info_price_value-final','span')
 }
-  function excute(axios,cheerio,arrDienMayXanh,timeOut,notify,className,tag) {
+  async function excute(httpsAgent,axios,cheerio,arrDienMayXanh,timeOut,notify,className,tag) {
     const arrDienMayXanhValue=[];
 
     setInterval(function () {
 
         arrDienMayXanh.forEach((value,index) => {
-            axios.get(value)
+             axios.get(value, { httpsAgent })
                 .then(function (response) {
                     const $ = cheerio.load(response?.data); // load HTML
                     const job = $(className).find(tag).first().text(); // lấy tên job, được nằm trong thẻ a < .job__list-item-title
