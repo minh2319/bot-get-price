@@ -40,6 +40,7 @@ async function main() {
         arrDienMayXanh.forEach((value,index) => {
              axios.get(value, { httpsAgent })
                 .then(function (response) {
+                    console.log(response);
                     const $ = cheerio.load(response?.data); // load HTML
                     const job = $(className).find(tag).first().text(); // lấy tên job, được nằm trong thẻ a < .job__list-item-title
                     const text = value + ' : '+job;
